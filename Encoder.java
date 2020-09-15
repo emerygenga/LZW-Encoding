@@ -63,7 +63,7 @@ public class Encoder {
 			//if previous is a longer String, then find it in the dictionary
 			else
 			{
-				pw.print(256+dictionary.indexOf(p) + " ");
+				pw.print ( 256+dictionary.indexOf(p) + " " );
 			}
 			pw.close();
 			br.close();
@@ -77,22 +77,30 @@ public class Encoder {
 	
 	public void decode () throws IOException
 	{
-		FileReader fr;
-		
 		try
 		{
-			fr = new FileReader("encoded.txt");
+			// File Reader for Encoded Text
+			FileReader fr = new FileReader("encoded.txt");
+			
+			// Buffered Reader for File
 			BufferedReader br = new BufferedReader(fr);
+			
+			// PrintWriter for New Decoded Text File
+			PrintWriter pw = new PrintWriter ( "decoded.txt ");
 			
 			int a;
 			while ( ( a = br.read() ) != -1 )
 			{
 			}
 			
+			
+			
+			
+			
+			
 		}
 		catch (FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
