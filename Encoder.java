@@ -98,7 +98,8 @@ public class Encoder {
 			String currentCode = "";
 
 			int code;
-			while ((a = br.read()) != -1) {
+			while ( (a = br.read () ) != -1 )
+			{
 				thisCharacter = String.valueOf((char)a);
 				if (thisCharacter.equals(" ")) {
 					code = Integer.parseInt(currentCode);
@@ -121,6 +122,14 @@ public class Encoder {
 			System.out.println("An error occured.");
 		}
 		
-		System.out.println(decodedMessage);
+		// PrintWriter for New Decoded Text File
+		PrintWriter pw = new PrintWriter ( "decoded.txt ");
+		
+		for ( int counter = 0; counter < decodedMessage.length (); counter++ )
+		{
+			pw.print ( decodedMessage.charAt ( counter ) );
+		}
+		
+		pw.close ();
 	}
 }
