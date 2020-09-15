@@ -1,11 +1,10 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+//import all required tools
+import java.io.*;
 import java.util.ArrayList;
 
 public class Encoder {
+	
+	//initialize dictionary and previous, current, and previous + current variables
 	private ArrayList <String> dictionary = new ArrayList <String> (); 
 	private String p = "";
 	private char c = 0;
@@ -56,10 +55,12 @@ public class Encoder {
 
 			}
 			//edge case
+			//if previous is just one character then convert it to an int
 			if (p.length() == 1 )
 			{
 				pw.print((int)p.charAt(0)+ " ");
 			}
+			//if previous is a longer String, then find it in the dictionary
 			else
 			{
 				pw.print(256+dictionary.indexOf(p) + " ");
