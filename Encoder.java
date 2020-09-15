@@ -75,16 +75,17 @@ public class Encoder {
 		}
 	}
 	
-	public void decode ()
+	public void decode () throws IOException
 	{
 		FileReader fr;
+		
 		try
 		{
 			fr = new FileReader("encoded.txt");
 			BufferedReader br = new BufferedReader(fr);
 			
 			int a;
-			while ((a = br.read()) != -1)
+			while ( ( a = br.read() ) != -1 )
 			{
 			}
 			
