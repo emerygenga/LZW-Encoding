@@ -115,8 +115,8 @@ public class Encoder {
 		catch (Exception e)
 		{
 			System.out.println("An error occured.");
-
-			System.out.println(decodedMessage);
 		}
+		
+		System.out.println(decodedMessage);
 	}
 }
