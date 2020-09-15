@@ -90,7 +90,11 @@ public class Encoder {
 			PrintWriter pw = new PrintWriter ( "decoded.txt ");
 
 			int a;
+			
+			// String for This Character with Initialization
 			String thisCharacter = "";
+			
+			// String for Current Code with Initialization
 			String currentCode = "";
 
 			int code;
