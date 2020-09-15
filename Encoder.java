@@ -78,18 +78,21 @@ public class Encoder {
 	public void decode ()
 	{
 		FileReader fr;
-		try {
+		try
+		{
 			fr = new FileReader("encoded.txt");
 			BufferedReader br = new BufferedReader(fr);
 			
 			int a;
-			while ((a = br.read()) != -1) {
-		} catch (FileNotFoundException e) {
+			while ((a = br.read()) != -1)
+			{
+			}
+			
+		}
+		catch (FileNotFoundException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-			
 		}
 	}
 }
