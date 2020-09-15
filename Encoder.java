@@ -74,8 +74,6 @@ public class Encoder {
 			System.out.println ("can't read");
 		}
 	}
-<<<<<<< Updated upstream
-=======
 
 	public void decode () throws IOException
 	{
@@ -121,5 +119,4 @@ public class Encoder {
 			System.out.println(decodedMessage);
 		}
 	}
->>>>>>> Stashed changes
 }
