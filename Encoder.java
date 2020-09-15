@@ -74,4 +74,14 @@ public class Encoder {
 			System.out.println ("can't read");
 		}
 	}
+	
+	public void decode () {
+		FileReader fr = new FileReader("encoded.txt");
+		BufferedReader br = new BufferedReader(fr);
+		
+		int a;
+		while ((a = br.read()) != -1) {
+			
+		}
+	}
 }
