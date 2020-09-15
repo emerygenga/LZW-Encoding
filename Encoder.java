@@ -77,8 +77,13 @@ public class Encoder {
 	
 	public void decode () {
 		String decodedMessage = "";
-		try {
+		try
+		{
+			
+			// File Reader for Encoded Text
 			FileReader fr = new FileReader("encoded.txt");
+
+			// Buffered Reader for File
 			BufferedReader br = new BufferedReader(fr);
 			
 			int a;
