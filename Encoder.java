@@ -76,12 +76,37 @@ public class Encoder {
 	}
 	
 	public void decode () {
-		FileReader fr = new FileReader("encoded.txt");
-		BufferedReader br = new BufferedReader(fr);
-		
-		int a;
-		while ((a = br.read()) != -1) {
+		String decodedMessage = "";
+		try {
+			FileReader fr = new FileReader("encoded.txt");
+			BufferedReader br = new BufferedReader(fr);
 			
+			int a;
+			String thisCharacter = "";
+			String currentCode = "";
+			
+			int code;
+			while ((a = br.read()) != -1) {
+				thisCharacter = String.valueOf((char)a);
+				if (thisCharacter.equals(" ")) {
+					code = Integer.parseInt(currentCode);
+					if (code <= 255) {
+						decodedMessage += ((char)code);
+					}
+					else {
+						decodedMessage += dictionary.get(code-256);
+					}
+					currentCode = "";
+				}
+				else {
+					currentCode += thisCharacter;
+				}
+				
+			}
 		}
+		catch (Exception e) {
+			System.out.println("An error occured.");
+		}
+		System.out.println(decodedMessage);
 	}
 }

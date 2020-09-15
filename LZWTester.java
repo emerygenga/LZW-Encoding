@@ -5,5 +5,6 @@ public class LZWTester {
 	{
 		Encoder en = new Encoder ();
 		en.encode("input.txt");
+		en.decode();
 	}
 }
