@@ -63,7 +63,7 @@ public class Encoder {
 			//if previous is a longer String, then find it in the dictionary
 			else
 			{
-				pw.print(256+dictionary.indexOf(p) + " ");
+				pw.print ( 256+dictionary.indexOf(p) + " " );
 			}
 			pw.close();
 			br.close();
@@ -75,6 +75,7 @@ public class Encoder {
 		}
 	}
 	
+<<<<<<< HEAD
 	public void decode () {
 		String decodedMessage = "";
 		try {
@@ -106,6 +107,35 @@ public class Encoder {
 		}
 		catch (Exception e) {
 			System.out.println("An error occured.");
+=======
+	public void decode () throws IOException
+	{
+		try
+		{
+			// File Reader for Encoded Text
+			FileReader fr = new FileReader("encoded.txt");
+			
+			// Buffered Reader for File
+			BufferedReader br = new BufferedReader(fr);
+			
+			// PrintWriter for New Decoded Text File
+			PrintWriter pw = new PrintWriter ( "decoded.txt ");
+			
+			int a;
+			while ( ( a = br.read() ) != -1 )
+			{
+			}
+			
+			
+			
+			
+			
+			
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+>>>>>>> 1f3366335459962962410bc7fee77c3788ee9c3d
 		}
 		System.out.println(decodedMessage);
 	}
