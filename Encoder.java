@@ -74,4 +74,52 @@ public class Encoder {
 			System.out.println ("can't read");
 		}
 	}
+<<<<<<< Updated upstream
+=======
+
+	public void decode () throws IOException
+	{
+		String decodedMessage = "";
+		try
+		{
+			// File Reader for Encoded Text
+			FileReader fr = new FileReader("encoded.txt");
+
+			// Buffered Reader for File
+			BufferedReader br = new BufferedReader(fr);
+
+			// PrintWriter for New Decoded Text File
+			PrintWriter pw = new PrintWriter ( "decoded.txt ");
+
+			int a;
+			String thisCharacter = "";
+			String currentCode = "";
+
+			int code;
+			while ((a = br.read()) != -1) {
+				thisCharacter = String.valueOf((char)a);
+				if (thisCharacter.equals(" ")) {
+					code = Integer.parseInt(currentCode);
+					if (code <= 255) {
+						decodedMessage += ((char)code);
+					}
+					else {
+						decodedMessage += dictionary.get(code-256);
+					}
+					currentCode = "";
+				}
+				else {
+					currentCode += thisCharacter;
+				}
+
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("An error occured.");
+
+			System.out.println(decodedMessage);
+		}
+	}
+>>>>>>> Stashed changes
 }
