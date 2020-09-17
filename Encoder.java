@@ -63,7 +63,7 @@ public class Encoder {
 			//if previous is a longer String, then find it in the dictionary
 			else
 			{
-				pw.print ( 256+dictionary.indexOf(p) + " " );
+				pw.print(256+dictionary.indexOf(p) + " ");
 			}
 			pw.close();
 			br.close();
@@ -74,17 +74,28 @@ public class Encoder {
 			System.out.println ("can't read");
 		}
 	}
-	
-<<<<<<< HEAD
-	public void decode () {
+
+	public void decode () throws IOException
+	{
 		String decodedMessage = "";
-		try {
+		ArrayList<String> newDictionary = new ArrayList<String>();
+		try
+		{
+			// File Reader for Encoded Text
 			FileReader fr = new FileReader("encoded.txt");
+
+			// Buffered Reader for File
 			BufferedReader br = new BufferedReader(fr);
-			
+
+			// PrintWriter for New Decoded Text File
+			PrintWriter pw = new PrintWriter ( "decoded.txt ");
+
 			int a;
 			String thisCharacter = "";
 			String currentCode = "";
+			String c = "";
+			String p = "";
+			String pc = "";
 			
 			int code;
 			while ((a = br.read()) != -1) {
@@ -92,51 +103,40 @@ public class Encoder {
 				if (thisCharacter.equals(" ")) {
 					code = Integer.parseInt(currentCode);
 					if (code <= 255) {
-						decodedMessage += ((char)code);
+						decodedMessage += p;
+						if (c.equals("") && p.equals("") && pc.equals("")) {
+							p += String.valueOf((char)code);
+						}
+						else{
+							c = String.valueOf((char)code);
+							pc = p + c;
+							newDictionary.add(pc);
+							p = c;
+						}
+						
+						
 					}
 					else {
-						decodedMessage += dictionary.get(code-256);
+						c = newDictionary.get(code-256);
+						pc = p + c.charAt(0);
+						newDictionary.add(pc);
+						decodedMessage += c;
+						p = c;
+						
 					}
 					currentCode = "";
 				}
 				else {
 					currentCode += thisCharacter;
 				}
-				
+
 			}
 		}
-		catch (Exception e) {
-			System.out.println("An error occured.");
-=======
-	public void decode () throws IOException
-	{
-		try
+		catch (Exception e)
 		{
-			// File Reader for Encoded Text
-			FileReader fr = new FileReader("encoded.txt");
-			
-			// Buffered Reader for File
-			BufferedReader br = new BufferedReader(fr);
-			
-			// PrintWriter for New Decoded Text File
-			PrintWriter pw = new PrintWriter ( "decoded.txt ");
-			
-			int a;
-			while ( ( a = br.read() ) != -1 )
-			{
-			}
-			
-			
-			
-			
-			
-			
+			System.out.println(e);
 		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
->>>>>>> 1f3366335459962962410bc7fee77c3788ee9c3d
-		}
+		
 		System.out.println(decodedMessage);
 	}
 }
