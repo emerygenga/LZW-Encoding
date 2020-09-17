@@ -230,6 +230,13 @@ public class Encoder {
 					currentCode += thisCharacter;
 				}
 			}
+			
+			for ( int counter = 0; counter < decodedMessage.length (); counter++ )
+			{
+				pw.print ( decodedMessage.charAt ( counter ) );
+			}
+			
+			pw.close();
 		}
 		
 		// Catch for Errors
