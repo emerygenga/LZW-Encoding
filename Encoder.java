@@ -74,6 +74,7 @@ public class Encoder {
 			System.out.println ("can't read");
 		}
 	}
+<<<<<<< HEAD
 
 	public void decode () throws IOException
 	{
@@ -81,6 +82,14 @@ public class Encoder {
 		ArrayList<String> newDictionary = new ArrayList<String>();
 		try
 		{
+=======
+	
+	public void decode () {
+		String decodedMessage = "";
+		try
+		{
+			
+>>>>>>> 84d7301a03e66f67c6e98836fe86c5b4fa731ed1
 			// File Reader for Encoded Text
 			FileReader fr = new FileReader("encoded.txt");
 
@@ -129,12 +138,20 @@ public class Encoder {
 				else {
 					currentCode += thisCharacter;
 				}
+<<<<<<< HEAD
 
 			}
 		}
 		catch (Exception e)
 		{
 			System.out.println(e);
+=======
+				
+			}
+		}
+		catch (Exception e) {
+			System.out.println("An error occured.");
+>>>>>>> 84d7301a03e66f67c6e98836fe86c5b4fa731ed1
 		}
 		
 		System.out.println(decodedMessage);
