@@ -1,6 +1,6 @@
 //import all required tools
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Encoder {
 	
@@ -65,6 +65,10 @@ public class Encoder {
 			{
 				pw.print(256+dictionary.indexOf(p) + " ");
 			}
+			pw.print("x");
+			for (int i = 0; i < dictionary.size(); i++) {
+				pw.print("" + (i + 256) + ":" + dictionary.get(i).length() + "-" + dictionary.get(i));
+			}
 			pw.close();
 			br.close();
 			fr.close();
@@ -89,48 +93,78 @@ public class Encoder {
 
 			// PrintWriter for New Decoded Text File
 			PrintWriter pw = new PrintWriter ( "decoded.txt ");
-
+			
+			
 			int a;
+			boolean foundX = false;
+			String currentString = "";
+			HashMap<Integer, String> map = new HashMap<Integer, String>();
+			int thisCode = 0;
+			int lengthCounter = 0;
+			int codeLength = 0;
+			boolean startedReading = false;
+			while ((a = br.read()) != -1) {
+				if (foundX == true) {
+					if (startedReading == true) {
+						currentString += ((char)a);
+						lengthCounter++;
+						if (lengthCounter == codeLength) {
+							map.put(thisCode, currentString);
+							currentString = "";
+							lengthCounter = 0;
+							startedReading = false;
+						}
+					}
+					else {
+						if (String.valueOf((char)a).equals(":")) {
+							thisCode = Integer.parseInt(currentString);
+							currentString = "";
+						}
+						else if (String.valueOf((char)a).equals("-")) {
+							codeLength = Integer.parseInt(currentString);
+							startedReading = true;
+							currentString = "";
+						}
+						else {
+							currentString += ((char)a);
+						}
+					}
+				}
+				else if (String.valueOf((char)a).equals("x")) {
+					foundX=true;
+				}
+			}
+//			for (Integer key : map.keySet()){
+//				System.out.println(key + ": " + map.get(key));
+//			}
+			fr.close();
+			br.close();
+			// File Reader for Encoded Text
+			FileReader f = new FileReader("encoded.txt");
+
+			// Buffered Reader for File
+			BufferedReader bf = new BufferedReader(f);
 			String thisCharacter = "";
 			String currentCode = "";
-			String c = "";
-			String p = "";
-			String pc = "";
-			
-			int code;
-			while ((a = br.read()) != -1) {
-				thisCharacter = String.valueOf((char)a);
+			int code = 0;
+			int b;
+			while ((b = bf.read()) != -1 && String.valueOf((char)b).equals("x") == false) {
+				thisCharacter = String.valueOf((char)b);
 				if (thisCharacter.equals(" ")) {
 					code = Integer.parseInt(currentCode);
 					if (code <= 255) {
-						decodedMessage += p;
-						if (c.equals("") && p.equals("") && pc.equals("")) {
-							p += String.valueOf((char)code);
-						}
-						else{
-							c = String.valueOf((char)code);
-							pc = p + c;
-							newDictionary.add(pc);
-							p = c;
-						}
-						
-						
+						decodedMessage += (char)code;
 					}
 					else {
-						c = newDictionary.get(code-256);
-						pc = p + c.charAt(0);
-						newDictionary.add(pc);
-						decodedMessage += c;
-						p = c;
-						
+						decodedMessage += map.get(code);	
 					}
 					currentCode = "";
 				}
 				else {
 					currentCode += thisCharacter;
 				}
-
 			}
+			System.out.println(decodedMessage);
 		}
 		catch (Exception e)
 		{
@@ -138,6 +172,6 @@ public class Encoder {
 
 		}
 		
-		System.out.println(decodedMessage);
+		//System.out.println(decodedMessage);
 	}
 }
