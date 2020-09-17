@@ -81,8 +81,12 @@ public class Encoder {
 
 	public void decode () throws IOException
 	{
+		// New String for Message
 		String decodedMessage = "";
-		ArrayList<String> newDictionary = new ArrayList<String>();
+		
+		// Dictionary to ReCreate Strings
+		ArrayList < String > newDictionary = new ArrayList < String > ();
+		
 		try
 		{
 			// File Reader for Encoded Text
@@ -94,84 +98,146 @@ public class Encoder {
 			// PrintWriter for New Decoded Text File
 			PrintWriter pw = new PrintWriter ( "decoded.txt ");
 			
-			
+			// Int for Letter in String
 			int a;
+			
+			// Boolean for Letter in Dictionary
 			boolean foundX = false;
+			
+			// String for Current String
 			String currentString = "";
-			HashMap<Integer, String> map = new HashMap<Integer, String>();
+			
+			// HashMap for Dictionary
+			HashMap < Integer, String > map = new HashMap < Integer, String > ();
+			
+			// Int for Current Code
 			int thisCode = 0;
+			
+			// Int for Current Counter
 			int lengthCounter = 0;
+			
+			// Int for Current Length
 			int codeLength = 0;
+			
+			// Boolean for Reading
 			boolean startedReading = false;
-			while ((a = br.read()) != -1) {
-				if (foundX == true) {
-					if (startedReading == true) {
-						currentString += ((char)a);
+			
+			// While There Is a Char in the Buffered Reader
+			while ( ( a = br.read () ) != -1 )
+			{
+				// If X Is in the Dictionary
+				if ( foundX == true )
+				{
+					// If We Have Started Reading
+					if ( startedReading == true )
+					{
+						// Add the Char Version of the Letter from the Buffered Reader to the String
+						currentString += ( ( char ) a );
+						// Length of String Increases by One
 						lengthCounter++;
-						if (lengthCounter == codeLength) {
-							map.put(thisCode, currentString);
+						
+						if ( lengthCounter == codeLength )
+						{
+							// Add to Dictionary
+							map.put ( thisCode, currentString );
+							// Reset
 							currentString = "";
+							// Reset
 							lengthCounter = 0;
+							// Reset
 							startedReading = false;
 						}
 					}
-					else {
-						if (String.valueOf((char)a).equals(":")) {
+					else
+					{
+						// If StateMent for Delimiters
+						if ( String.valueOf ( ( char ) a ).equals ( ":" ) )
+						{
 							thisCode = Integer.parseInt(currentString);
 							currentString = "";
 						}
-						else if (String.valueOf((char)a).equals("-")) {
+						// If StateMent for Delimiters
+						else if (String.valueOf ( ( char ) a ).equals ( "-" ) )
+						{
 							codeLength = Integer.parseInt(currentString);
 							startedReading = true;
 							currentString = "";
 						}
-						else {
-							currentString += ((char)a);
+						else
+						{
+							currentString += ( ( char ) a );
 						}
 					}
 				}
-				else if (String.valueOf((char)a).equals("x")) {
-					foundX=true;
+				// If a = x, Then We Found X
+				else if ( String.valueOf ( ( char ) a ).equals ( "x" ) )
+				{
+					foundX = true;
 				}
 			}
-//			for (Integer key : map.keySet()){
-//				System.out.println(key + ": " + map.get(key));
+//			for ( Integer key : map.keySet () )
+//			{
+//				System.out.println(key + ": " + map.get ( key ) );
 //			}
+			
 			fr.close();
 			br.close();
+			
 			// File Reader for Encoded Text
 			FileReader f = new FileReader("encoded.txt");
 
 			// Buffered Reader for File
 			BufferedReader bf = new BufferedReader(f);
+			
+			// String Character
 			String thisCharacter = "";
+			
+			// String Current Code
 			String currentCode = "";
+			
+			
 			int code = 0;
+			
+			// String from Buffered Reader
 			int b;
-			while ((b = bf.read()) != -1 && String.valueOf((char)b).equals("x") == false) {
-				thisCharacter = String.valueOf((char)b);
-				if (thisCharacter.equals(" ")) {
+			
+			// While b != x
+			while ( ( b = bf.read() ) != -1 && String.valueOf ( (char ) b ).equals ( "x" ) == false )
+			{
+				// Character Becomes B
+				thisCharacter = String.valueOf ( ( char ) b );
+				
+				// If StateMent for Delimiters
+				if (thisCharacter.equals ( " " ) )
+				{
 					code = Integer.parseInt(currentCode);
-					if (code <= 255) {
+					
+					// If String Is in the Dictionary
+					if ( code <= 255  )
+					{
 						decodedMessage += (char)code;
 					}
-					else {
+					else
+					// If String Is Not in Dictionary, Use Dictionary We Created
+					{
 						decodedMessage += map.get(code);	
 					}
 					currentCode = "";
 				}
-				else {
+				else
+				{
+					// Add Character to Current Code
 					currentCode += thisCharacter;
 				}
 			}
-			System.out.println(decodedMessage);
+			// Print Decoded Message
+			System.out.println ( decodedMessage );
 		}
+		
+		// Catch for Errors
 		catch (Exception e)
 		{
 			System.out.println(e);
-
 		}
-		
-		//System.out.println(decodedMessage);
 	}
 }
