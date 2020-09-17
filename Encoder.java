@@ -230,8 +230,6 @@ public class Encoder {
 					currentCode += thisCharacter;
 				}
 			}
-			// Print Decoded Message
-			System.out.println ( decodedMessage );
 		}
 		
 		// Catch for Errors
