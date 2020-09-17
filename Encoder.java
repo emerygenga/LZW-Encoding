@@ -231,6 +231,7 @@ public class Encoder {
 				}
 			}
 			
+			// Print Decoded Message to File
 			for ( int counter = 0; counter < decodedMessage.length (); counter++ )
 			{
 				pw.print ( decodedMessage.charAt ( counter ) );
