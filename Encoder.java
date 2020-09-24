@@ -57,7 +57,7 @@ public class Encoder {
 						index +=toPrint.length();
 						pw.print(toPrint);
 					}
-					if (dictionary.size()<=2)
+					if (dictionary.size()<=1000)
 					{
 						dictionary.add(pc);
 					}
@@ -98,8 +98,9 @@ public class Encoder {
 			//creates the end of the file in the order of: "[index of delimieter] [how long that index is]
 			String delimiterIndexString = "" + index;
 			int lengthOfIndex = delimiterIndexString.length();
-			pw.print(" ");
 			pw.print(delimiterIndexString);
+			pw.print(" ");
+			pw.print(lengthOfIndex);
 			//close all writers and readers
 			pw.close();
 			br.close();
