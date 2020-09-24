@@ -46,9 +46,15 @@ public class Encoder {
 					{
 						pw.print(256+dictionary.indexOf(p) + " ");
 					}
-					if (dictionary.size()<=1000)
+					if (dictionary.size()<=2)
 					{
 						dictionary.add(pc);
+					}
+					else 
+					{
+						System.out.println ("Dictionary excedes limit"); 
+						br.close (); 
+						break; 
 					}
 					p= "" + c;
 				}
@@ -101,8 +107,8 @@ public class Encoder {
 			// PrintWriter for New Decoded Text File
 			PrintWriter pw = new PrintWriter ( "decoded.txt ");
 			
-			// Int a (just to store each character being read in)
-			int a;
+			// Int currentCharacter (just to store each character being read in)
+			int currentCharacter;
 			
 			// Boolean for whether or not the Letter X has been read in yet, which indicates the start of the dictionary
 			boolean foundX = false;
@@ -126,7 +132,7 @@ public class Encoder {
 			boolean startedReading = false;
 			
 			// While There Is a Char in the Buffered Reader
-			while ( ( a = br.read () ) != -1 )
+			while ( ( currentCharacter = br.read () ) != -1 )
 			{
 				// If the letter X has been found yet
 				if ( foundX == true )
@@ -135,7 +141,7 @@ public class Encoder {
 					if ( startedReading == true )
 					{
 						// Add the Char Version of the Letter from the Buffered Reader to the current String that is being constructed
-						currentString += ( ( char ) a );
+						currentString += ( ( char ) currentCharacter );
 						// counter for the length of the String constructed so far Increases by One
 						lengthCounter++;
 						//if the current String has hit the specified length of the dictionary entry
@@ -154,13 +160,13 @@ public class Encoder {
 					else
 					{
 						// If Statement for Delimiter ":", which represents the end of the index of the dictionary entry and the start of its length
-						if ( String.valueOf ( ( char ) a ).equals ( ":" ) )
+						if ( String.valueOf ( ( char ) currentCharacter).equals ( ":" ) )
 						{
 							thisCode = Integer.parseInt(currentString);
 							currentString = "";
 						}
 						// If Statement for Delimiter "-", which indicates the end of the length of the dictionary entry and the start of the actual character combination
-						else if (String.valueOf ( ( char ) a ).equals ( "-" ) )
+						else if (String.valueOf ( ( char ) currentCharacter ).equals ( "-" ) )
 						{
 							//parse the length of the entry to an int
 							codeLength = Integer.parseInt(currentString);
@@ -172,12 +178,12 @@ public class Encoder {
 						else
 						{
 							//append the current character to currentString
-							currentString += ( ( char ) a );
+							currentString += ( ( char ) currentCharacter );
 						}
 					}
 				}
 				// If a = x, Then We Found X
-				else if ( String.valueOf ( ( char ) a ).equals ( "x" ) )
+				else if ( String.valueOf ( ( char ) currentCharacter ).equals ( "x" ) )
 				{
 					//set foundX to true
 					foundX = true;

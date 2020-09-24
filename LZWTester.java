@@ -4,7 +4,7 @@ public class LZWTester {
 	public static void main (String [] args) throws IOException
 	{
 		Encoder en = new Encoder ();
-		en.encode("input.txt");
-		en.decode();
+		en.encode("lzw-file1.txt");
+		
 	}
 }
