@@ -18,6 +18,13 @@ public class Encoder {
 	public void encode (String fileName) throws IOException
 	{
 		try {
+			
+			// keep track of the index of the file
+			int index = 0;
+			
+			//the string that will be printed
+			String toPrint = "";
+			
 			//reading in a text file and creating print writer
 			FileReader fr = new FileReader (fileName);
 			BufferedReader br = new BufferedReader(fr);
@@ -39,12 +46,16 @@ public class Encoder {
 					//if p is already in the ascii table
 					if (p.length()==1)
 					{
-						pw.print((int)p.charAt(0) + " ");
+						toPrint = (int)p.charAt(0) + " ";
+						index += toPrint.length();
+						pw.print(toPrint);
 					}
 					//if only in dictionary
 					else 
 					{
-						pw.print(256+dictionary.indexOf(p) + " ");
+						toPrint = 256 + dictionary.indexOf(p) + " ";
+						index +=toPrint.length();
+						pw.print(toPrint);
 					}
 					if (dictionary.size()<=2)
 					{
@@ -64,12 +75,16 @@ public class Encoder {
 			//if previous is just one character then convert it to an int
 			if (p.length() == 1 )
 			{
-				pw.print((int)p.charAt(0)+ " ");
+				toPrint = (int)p.charAt(0)+ " ";
+				index += toPrint.length();
+				pw.print(toPrint);
 			}
 			//if previous is a longer String, then find it in the dictionary
 			else
 			{
-				pw.print(256+dictionary.indexOf(p) + " ");
+				toPrint = 256+dictionary.indexOf(p) + " ";
+				index += toPrint.length();
+				pw.print(toPrint);
 			}
 			// Include the dictionary at the end of the encoded file
 			// Print an x to represent the end of the code and the start of the dictionary
@@ -79,6 +94,12 @@ public class Encoder {
 			for (int i = 0; i < dictionary.size(); i++) {
 				pw.print("" + (i + 256) + ":" + dictionary.get(i).length() + "-" + dictionary.get(i));
 			}
+			
+			//creates the end of the file in the order of: "[index of delimieter] [how long that index is]
+			String delimiterIndexString = "" + index;
+			int lengthOfIndex = delimiterIndexString.length();
+			pw.print(" ");
+			pw.print(delimiterIndexString);
 			//close all writers and readers
 			pw.close();
 			br.close();
