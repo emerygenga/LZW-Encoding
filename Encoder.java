@@ -111,6 +111,69 @@ public class Encoder {
 			System.out.println ("can't read");
 		}
 	}
+	
+	public void check () throws IOException
+	{
+		//read in the file
+		RandomAccessFile fileReader = new RandomAccessFile ("encoded.txt", "r");
+
+		// PrintWriter for New Decoded Text File
+		PrintWriter pw = new PrintWriter ( "decoded.txt ");
+		
+		//find the index where the dictionary begins
+		
+		//go to the end of the file
+		int index = (int) fileReader.length() - 1;
+		fileReader.seek(index);
+		
+		//currentCharacter represents the current char being read
+		int currentCharacter = fileReader.read();
+		
+		//A string representing the # of digits in the index
+		String digitsInIndexString = "";
+		
+		//we read the file backwards till we hit a space (indicating the end of the number representing
+		//the num of digits
+		while (currentCharacter!= 32)
+		{
+			//add the current character to the front of the digitsInIndex string
+			digitsInIndexString = (char)currentCharacter + digitsInIndexString;
+			
+			//read the next char to the left
+			index --;
+			fileReader.seek(index);
+			currentCharacter = fileReader.read();
+		}
+		
+		//change the digits in index string to an int
+		int digitsInIndex = Integer.parseInt(digitsInIndexString);
+		System.out.println("Number of digits in the delimiter's index: " + digitsInIndex);
+
+		//move one backwards from the space to the first char in the index of the delimiter
+		index--;
+		
+		//save this char as the end of the index of the delimiter
+		int endIndexOfDelimiterIndex = index;
+		
+		//this string represents the index of the delimiter
+		String indexOfDelimiterString = "";
+		
+		//read through as many characters as there are digits in the index of the delimiter
+		while (index > endIndexOfDelimiterIndex - digitsInIndex)
+		{
+			//read in each digit and then move to the char to the left
+			fileReader.seek(index);
+			indexOfDelimiterString = (char)fileReader.read() + indexOfDelimiterString;
+			index --;
+		}
+		
+		//parse the index of the delimiter into a string
+		int indexOfDelimiter = Integer.parseInt(indexOfDelimiterString);
+		System.out.println("Index of delimiter: " + indexOfDelimiter);
+		
+		int numUselessCharacters = indexOfDelimiterString.length() + digitsInIndexString.length() + 1;
+		System.out.println ("There are " + numUselessCharacters + " at the end that shouldn't be read in as part of the dictionary");
+	}
 
 	public void decode () throws IOException
 	{
@@ -121,16 +184,24 @@ public class Encoder {
 		{
 			// First, the dictionary alone is read from the encoded file
 			// File Reader for Encoded Text
-			FileReader fr = new FileReader("encoded.txt");
-
-			// Buffered Reader for File
-			BufferedReader br = new BufferedReader(fr);
+			RandomAccessFile fileReader = new RandomAccessFile ("encoded.txt", "r");
 
 			// PrintWriter for New Decoded Text File
 			PrintWriter pw = new PrintWriter ( "decoded.txt ");
 			
-			// Int currentCharacter (just to store each character being read in)
-			int currentCharacter;
+			//find the index where the dictionary begins
+			//go to the end of the file
+			fileReader.seek(fileReader.length());
+			
+			//read in the cha
+			int currentCharacter = fileReader.read();
+			String digitsInIndex = "";
+			
+			while (currentCharacter!= 32)
+			{
+				digitsInIndex = (char)currentCharacter + digitsInIndex;
+				currentCharacter = fileReader.read();
+			}
 			
 			// Boolean for whether or not the Letter X has been read in yet, which indicates the start of the dictionary
 			boolean foundX = false;

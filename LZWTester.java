@@ -9,5 +9,7 @@ public class LZWTester {
 	{
 		Encoder en = new Encoder ();
 		en.encode("lzw-file1.txt");
+		
+		en.check();
 	}
 }
