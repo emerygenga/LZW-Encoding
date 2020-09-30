@@ -8,8 +8,7 @@ public class LZWTester {
 	public static void main (String [] args) throws IOException
 	{
 		Encoder en = new Encoder ();
-		en.encode("lzw-file1.txt");
-		
-		en.check();
-	}
+		en.encode("lzw-file3.txt");
+		en.decode();
+		}
 }
