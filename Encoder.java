@@ -4,11 +4,6 @@ import java.util.*;
 
 public class Encoder {
 
-	//initialize dictionary and previous, current, and previous + current variables
-	private ArrayList <String> dictionary = new ArrayList <String> (); 
-	private String p = "";
-	private char c = 0;
-	private String pc = "";
 
 	public Encoder ()
 	{
@@ -17,6 +12,17 @@ public class Encoder {
 
 	public void encode (String fileName) throws IOException
 	{
+		//initializes dictionary 
+		ArrayList <String> dictionary = new ArrayList <String> (); 
+		
+		//the previous character or String 
+		String previous = "";
+		
+		//the current character being read in by the BufferedReader 
+		char current = 0;
+		
+		//a concatenation of previous + current 
+		String pc = "";
 		try {
 
 			// keep track of the index of the file
@@ -26,36 +32,36 @@ public class Encoder {
 			String toPrint = "";
 
 			//reading in a text file and creating print writer
-			FileReader fr = new FileReader (fileName);
-			BufferedReader br = new BufferedReader(fr);
-			PrintWriter pw = new PrintWriter ("encoded.txt");
-			while (br.ready())
+			FileReader fileReader = new FileReader (fileName);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			PrintWriter printWriter = new PrintWriter ("encoded.txt");
+			while (bufferedReader.ready())
 			{
-				c = (char)br.read();
-				pc = p+c;
+				current = (char)bufferedReader.read();
+				pc = previous+current;
 				//dictionary excludes characters 0-255 in the ascii table
 				//if pc is already in the dictionary or if it's in the ascii table
 				if (dictionary.indexOf(pc) >= 0 || pc.length() == 1)
 				{
-					p = pc;
+					previous = pc;
 				}
 				//print out value for previous character
 				else
 				{
 
-					//if p is already in the ascii table
-					if (p.length()==1)
+					//if previous is already in the ascii table
+					if (previous.length()==1)
 					{
-						toPrint = (int)p.charAt(0) + " ";
+						toPrint = (int)previous.charAt(0) + " ";
 						index += toPrint.length();
-						pw.print(toPrint);
+						printWriter.print(toPrint);
 					}
 					//if only in dictionary
 					else 
 					{
-						toPrint = 256 + dictionary.indexOf(p) + " ";
+						toPrint = 256 + dictionary.indexOf(previous) + " ";
 						index +=toPrint.length();
-						pw.print(toPrint);
+						printWriter.print(toPrint);
 					}
 					if (dictionary.size()<=10000)
 					{
@@ -64,47 +70,47 @@ public class Encoder {
 					else 
 					{
 						System.out.println ("Dictionary excedes limit"); 
-						br.close (); 
+						bufferedReader.close (); 
 						break; 
 					}
-					p= "" + c;
+					previous= "" + current;
 				}
 
 			}
 			//edge case
 			//if previous is just one character then convert it to an int
-			if (p.length() == 1 )
+			if (previous.length() == 1 )
 			{
-				toPrint = (int)p.charAt(0)+ " ";
+				toPrint = (int)previous.charAt(0)+ " ";
 				index += toPrint.length();
-				pw.print(toPrint);
+				printWriter.print(toPrint);
 			}
 			//if previous is a longer String, then find it in the dictionary
 			else
 			{
-				toPrint = 256+dictionary.indexOf(p) + " ";
+				toPrint = 256+dictionary.indexOf(previous) + " ";
 				index += toPrint.length();
-				pw.print(toPrint);
+				printWriter.print(toPrint);
 			}
 			// Include the dictionary at the end of the encoded file
 			// Print an x to represent the end of the code and the start of the dictionary
-			pw.print("x");
+			printWriter.print("x");
 			// print each the index of each dictionary entry, then the length of the entry so when reading it in, it is easy to know when to stop, then print the entry itself
 			// these are delimited by a ":" between the index and the length and a "-" between the length and the entry itself
 			for (int i = 0; i < dictionary.size(); i++) {
-				pw.print("" + (i + 256) + ":" + dictionary.get(i).length() + "-" + dictionary.get(i));
+				printWriter.print("" + (i + 256) + ":" + dictionary.get(i).length() + "-" + dictionary.get(i));
 			}
 
 			//creates the end of the file in the order of: "[index of delimieter] [how long that index is]
 			String delimiterIndexString = "" + index;
 			int lengthOfIndex = delimiterIndexString.length();
-			pw.print(delimiterIndexString);
-			pw.print(" ");
-			pw.print(lengthOfIndex);
+			printWriter.print(delimiterIndexString);
+			printWriter.print(" ");
+			printWriter.print(lengthOfIndex);
 			//close all writers and readers
-			pw.close();
-			br.close();
-			fr.close();
+			printWriter.close();
+			bufferedReader.close();
+			fileReader.close();
 		}
 		catch (IOException e)
 		{
@@ -121,7 +127,7 @@ public class Encoder {
 			RandomAccessFile fileReader = new RandomAccessFile ("encoded.txt", "r");
 
 			// PrintWriter for New Decoded Text File
-			PrintWriter pw = new PrintWriter ( "decoded.txt ");
+			PrintWriter printWriter = new PrintWriter ( "decoded.txt ");
 
 			//find the index where the dictionary begins
 
@@ -201,17 +207,17 @@ public class Encoder {
 			while (fileReader.getFilePointer() < (fileReader.length() - numUselessCharacters) + 1)
 			{
 				// If We Have Started Reading a combination that is in the dictionary
-				if ( startedReading == true )
+				if (startedReading == true)
 				{
 					// Add the Char Version of the Letter from the Buffered Reader to the current String that is being constructed
-					currentString += ( ( char ) currentCharacter );
+					currentString += ((char)currentCharacter);
 					// counter for the length of the String constructed so far Increases by One
 					lengthCounter++;
 					//if the current String has hit the specified length of the dictionary entry
-					if ( lengthCounter == codeLength )
+					if (lengthCounter == codeLength)
 					{
 						// Add to Dictionary
-						map.put ( thisCode, currentString );
+						map.put (thisCode, currentString);
 						// Reset currentString
 						currentString = "";
 						// Reset lengthCounter
@@ -223,13 +229,13 @@ public class Encoder {
 				else
 				{
 					// If Statement for Delimiter ":", which represents the end of the index of the dictionary entry and the start of its length
-					if ( String.valueOf ( ( char ) currentCharacter).equals ( ":" ) )
+					if (String.valueOf ((char)currentCharacter).equals(":"))
 					{
 						thisCode = Integer.parseInt(currentString);
 						currentString = "";
 					}
 					// If Statement for Delimiter "-", which indicates the end of the length of the dictionary entry and the start of the actual character combination
-					else if (String.valueOf ( ( char ) currentCharacter ).equals ( "-" ) )
+					else if (String.valueOf ((char)currentCharacter).equals("-"))
 					{
 						//parse the length of the entry to an int
 						codeLength = Integer.parseInt(currentString);
@@ -241,7 +247,7 @@ public class Encoder {
 					else
 					{
 						//append the current character to currentString
-						currentString += ( ( char ) currentCharacter );
+						currentString += ((char)currentCharacter);
 					}
 				}
 				//read in next character
@@ -282,13 +288,13 @@ public class Encoder {
 					if ( code <= 255  )
 					{
 						// the character is added to the message
-						pw.print((char)code);
+						printWriter.print((char)code);
 					}
 					else
 						// If the code does not represent a single character, Use Dictionary We Created to find its value
 					{
 						// add the decoded combination to the decoded message
-						pw.print(map.get(code));	
+						printWriter.print(map.get(code));	
 					}
 					//reset the currentCode after each individual code has been decoded
 					currentCode = "";
@@ -303,7 +309,7 @@ public class Encoder {
 			}
 
 			// close the print writer
-			pw.close();
+			printWriter.close();
 			
 			// close the file reader
 			fileReader.close();
