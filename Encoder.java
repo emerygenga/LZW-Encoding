@@ -198,7 +198,7 @@ public class Encoder {
 			//read it in
 			currentCharacter = fileReader.read();
 
-			while (fileReader.getFilePointer() < fileReader.length() - 4)
+			while (fileReader.getFilePointer() < (fileReader.length() - numUselessCharacters) + 1)
 			{
 				// If We Have Started Reading a combination that is in the dictionary
 				if ( startedReading == true )
@@ -266,8 +266,8 @@ public class Encoder {
 			int code = 0;
 
 
-			// While b != "x" and the end of the file hasn't been reached
-			while (fileReader.getFilePointer() < indexOfDelimiter)
+			// While the delimiter indicating the end of the code + beginning of the dictionary hasn't been reached
+			while (fileReader.getFilePointer() < indexOfDelimiter + 1)
 			{
 				// thisCharacter Becomes the current character
 				thisCharacter = String.valueOf((char)currentCharacter);
